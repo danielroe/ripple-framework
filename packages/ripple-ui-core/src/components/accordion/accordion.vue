@@ -8,6 +8,7 @@ import { PropType, ref, computed } from 'vue'
 import RplIcon from '../icon/icon.vue'
 import RplContent from '../content/content.vue'
 import { useExpandableCollection } from '../../composables/useExpandableCollection'
+import Expandable from './expandable.vue';
 
 type RplAccordionItem = {
   title: string
@@ -32,12 +33,24 @@ const props = defineProps({
 
 const itemContentEls = ref([])
 
+// const {
+//   isItemExpanded,
+//   isAllExpanded,
+//   toggleItem,
+//   toggleAll
+// } = useExpandableCollection(props.items, itemContentEls)
+
+const initialActiveIndexes =
+  props.items
+    .filter(item => item.active)
+    .map((item, i) => i)
+
 const {
   isItemExpanded,
   isAllExpanded,
   toggleItem,
   toggleAll
-} = useExpandableCollection(props.items, itemContentEls)
+} = useExpandableState(initialActiveIndexes, props.items.length)
 
 const toggleAllLabel = computed(() => {
   let label = 'Open all'
@@ -107,24 +120,26 @@ const toggleAllLabel = computed(() => {
         </button>
 
         <!-- Item content -->
-        <div
-          :id="`accordion-${id}-${index}-content`"
-          :ref="
-            (el) => {
-              itemContentEls[index] = el
-            }
-          "
-          class="rpl-accordion__item-content"
-          role="region"
-          :aria-labelledby="`accordion-${id}-${index}-toggle`"
-          :aria-hidden="isItemExpanded(index) === false ? 'true' : null"
-        >
-          <RplContent
-            class="rpl-accordion__item-content-inner"
-            :html="item.content"
+        <Expandable :expanded="isItemExpanded(index)">
+          <div
+            :id="`accordion-${id}-${index}-content`"
+            :ref="
+              (el) => {
+                itemContentEls[index] = el
+              }
+            "
+            class="rpl-accordion__item-content"
+            role="region"
+            :aria-labelledby="`accordion-${id}-${index}-toggle`"
+            :aria-hidden="isItemExpanded(index) === false ? 'true' : null"
           >
-          </RplContent>
-        </div>
+            <RplContent
+              class="rpl-accordion__item-content-inner"
+              :html="item.content"
+            >
+            </RplContent>
+          </div>
+        </Expandable>
       </li>
     </component>
   </div>

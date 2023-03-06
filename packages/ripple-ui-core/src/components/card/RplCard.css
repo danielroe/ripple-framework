@@ -1,7 +1,7 @@
 @import '@dpc-sdp/ripple-ui-core/style/breakpoints';
 
 .rpl-card {
-  background-color: var(--rpl-clr-light);
+  background-color: red;
   border: var(--rpl-border-1) solid var(--rpl-clr-neutral-300);
   border-radius: var(--rpl-border-radius-2);
   color: var(--rpl-clr-type-default);

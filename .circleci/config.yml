@@ -305,6 +305,7 @@ workflows:
           filters:
             branches:
               ignore:
+                - develop
                 - /gh-readonly-queue\/.*/
       - chromatic:
           requires:
@@ -313,6 +314,7 @@ workflows:
           filters:
             branches:
               ignore:
+                - develop
                 - /gh-readonly-queue\/.*/
       - publish-alpha:
           requires:
